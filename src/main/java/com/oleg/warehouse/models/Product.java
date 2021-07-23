@@ -1,36 +1,30 @@
 package com.oleg.warehouse.models;
 
+import com.oleg.warehouse.entities.ProductEntity;
+import com.oleg.warehouse.entities.VendorEntity;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
-import javax.persistence.*;
-
-@Entity
 @Data
-@RequiredArgsConstructor
-@NoArgsConstructor
-@Table(name = "product")
 public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NonNull
-    @Column(name = "description")
     private String description;
-    @NonNull
-    @Column(name = "serial_number")
     private String serialNumber;
-    @NonNull
-    @Column(name = "vendor")
-    private String vendor;
-    @NonNull
-    @Column(name = "price")
+    private VendorEntity vendor;
     private Integer price;
-    @NonNull
-    @Column(name = "status")
     private String status;
 
+    public static Product getModel(ProductEntity productEntity) {
+        Product product = new Product();
+
+        product.setId(productEntity.getId());
+        product.setDescription(productEntity.getDescription());
+        product.setSerialNumber(productEntity.getSerialNumber());
+        product.setVendor(productEntity.getVendor());
+        product.setPrice(productEntity.getPrice());
+        product.setStatus(productEntity.getStatus());
+
+        return product;
+
+    }
 }
