@@ -1,6 +1,8 @@
 package com.oleg.warehouse.exceptions;
 
-public class ProductNotFoundException extends Exception {
+import javassist.NotFoundException;
+
+public class ProductNotFoundException extends NotFoundException {
     public ProductNotFoundException(String errMessage) {
         super(errMessage);
     }

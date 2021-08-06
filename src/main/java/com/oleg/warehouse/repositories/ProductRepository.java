@@ -14,6 +14,5 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
     List<ProductEntity> findByVendor(@NonNull VendorEntity vendor);
 
-    List<ProductEntity> findAllByOrderByIdAsc();
-
+    List<ProductEntity> findAllByDescriptionContaining(String filter);
 }
