@@ -1,7 +1,6 @@
 package com.oleg.warehouse.dto;
 
-import com.oleg.warehouse.entities.ProductEntity;
-import com.oleg.warehouse.entities.VendorEntity;
+import com.oleg.warehouse.entity.VendorEntity;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,14 +15,4 @@ public class ProductDTO {
     private Integer price;
     private String status;
 
-    public static ProductDTO makeDefault(ProductEntity entity) {
-        return builder()
-                .id(entity.getId())
-                .description(entity.getDescription())
-                .serialNumber(entity.getSerialNumber())
-                .price(entity.getPrice())
-                .status(entity.getStatus())
-                .vendor(entity.getVendor())
-                .build();
-    }
 }

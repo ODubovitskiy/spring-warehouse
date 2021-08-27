@@ -1,7 +1,7 @@
-package com.oleg.warehouse.repositories;
+package com.oleg.warehouse.repository;
 
-import com.oleg.warehouse.entities.ProductEntity;
-import com.oleg.warehouse.entities.VendorEntity;
+import com.oleg.warehouse.entity.ProductEntity;
+import com.oleg.warehouse.entity.VendorEntity;
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

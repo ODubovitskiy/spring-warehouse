@@ -1,10 +1,7 @@
-package com.oleg.warehouse.entities;
+package com.oleg.warehouse.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,15 +13,16 @@ import java.util.List;
 @NoArgsConstructor
 public class VendorEntity {
 
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
+            mappedBy = "vendor")
+    @JsonBackReference
+    private List<ProductEntity> products;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
     @Column(name = "name")
     @NonNull
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "vendor")
-    @JsonBackReference
-//    @JsonManagedReference
-
-    private List<ProductEntity> products;
 }

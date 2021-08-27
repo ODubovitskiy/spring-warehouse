@@ -1,8 +1,11 @@
 package com.oleg.warehouse.factory;
 
 import com.oleg.warehouse.dto.ProductDTO;
-import com.oleg.warehouse.entities.ProductEntity;
+import com.oleg.warehouse.entity.ProductEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ProductDTOFactory {
@@ -16,5 +19,13 @@ public class ProductDTOFactory {
                 .status(entity.getStatus())
                 .vendor(entity.getVendor())
                 .build();
+    }
+
+
+    public List<ProductDTO> makeProductDTOList(List<ProductEntity> list) {
+        return list
+                .stream()
+                .map(this::makeDefault)
+                .collect(Collectors.toList());
     }
 }

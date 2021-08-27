@@ -1,14 +1,12 @@
-package com.oleg.warehouse.services;
+package com.oleg.warehouse.service;
 
 import com.oleg.warehouse.dto.VendorDTO;
-import com.oleg.warehouse.entities.VendorEntity;
 import com.oleg.warehouse.factory.VendorDTOFactory;
-import com.oleg.warehouse.repositories.VendorRepository;
+import com.oleg.warehouse.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class VendorService {
@@ -21,16 +19,9 @@ public class VendorService {
     public VendorService(VendorRepository vendorRepository, VendorDTOFactory vendorDTOFactory) {
         this.vendorRepository = vendorRepository;
         this.vendorDTOFactory = vendorDTOFactory;
-
-    }
-
-    public VendorEntity getById(Long id) {
-        return vendorRepository.findById(id).get();
     }
 
     public List<VendorDTO> getAll() {
-        return vendorRepository.findAll().stream()
-                .map(vendorDTOFactory::makeDefault)
-                .collect(Collectors.toList());
+        return vendorDTOFactory.makeVendorDTOList(vendorRepository.findAll());
     }
 }

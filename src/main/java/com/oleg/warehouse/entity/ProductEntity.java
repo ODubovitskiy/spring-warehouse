@@ -1,4 +1,4 @@
-package com.oleg.warehouse.entities;
+package com.oleg.warehouse.entity;
 
 import lombok.*;
 
@@ -11,6 +11,11 @@ import javax.persistence.*;
 @Table(name = "product")
 public class ProductEntity {
 
+    @NonNull
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "vendor_id")
+    private VendorEntity vendor;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Exclude
@@ -21,7 +26,6 @@ public class ProductEntity {
     @NonNull
     @Column(name = "serial_number")
     private String serialNumber;
-
     @NonNull
     @Column(name = "price")
     private Integer price;
@@ -29,11 +33,4 @@ public class ProductEntity {
     @Column(name = "status")
     private String status;
 
-    @NonNull
-    @ManyToOne()
-    @JoinColumn(name = "vendor_id")
-//    @JsonManagedReference
-//    @JsonBackReference
-
-    private VendorEntity vendor;
 }

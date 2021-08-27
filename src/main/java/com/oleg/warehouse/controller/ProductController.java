@@ -1,11 +1,11 @@
-package com.oleg.warehouse.controllers;
+package com.oleg.warehouse.controller;
 
 import com.oleg.warehouse.dto.ProductDTO;
-import com.oleg.warehouse.entities.ProductEntity;
-import com.oleg.warehouse.exceptions.ProductAlreadyExistsException;
-import com.oleg.warehouse.exceptions.ProductNotFoundException;
-import com.oleg.warehouse.exceptions.VendorNotFoundException;
-import com.oleg.warehouse.services.ProductService;
+import com.oleg.warehouse.entity.ProductEntity;
+import com.oleg.warehouse.exception.ProductAlreadyExistsException;
+import com.oleg.warehouse.exception.ProductNotFoundException;
+import com.oleg.warehouse.exception.VendorNotFoundException;
+import com.oleg.warehouse.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +19,9 @@ import java.util.Locale;
 @RequestMapping("api/products")
 public class ProductController {
 
-    public static final String GET_ALL = "";
-    public static final String GET_BY_ID = "/{id}";
-    public static final String CREATE = "";
+    public static final String INDEX = "";
+    public static final String STORE = "";
+    public static final String SHOW = "/{id}";
     public static final String UPDATE = "/{id}";
     public static final String DELETE = "/{id}";
     public static final String FETCH_BY_VENDOR = "";
@@ -34,12 +34,12 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping(GET_ALL)
-    public List<ProductDTO> getAll() {
+    @GetMapping(INDEX)
+    public List<ProductDTO> index() {
         return productService.getAll();
     }
 
-    @GetMapping(GET_BY_ID)
+    @GetMapping(SHOW)
     public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(productService.getById(id));
@@ -48,8 +48,8 @@ public class ProductController {
         }
     }
 
-    @PostMapping(CREATE)
-    public ResponseEntity<ProductDTO> save(@RequestBody ProductEntity productEntity) {
+    @PostMapping(STORE)
+    public ResponseEntity<ProductDTO> create(@RequestBody ProductEntity productEntity) {
         try {
             return ResponseEntity.ok(productService.saveProduct(productEntity));
         } catch (ProductAlreadyExistsException e) {

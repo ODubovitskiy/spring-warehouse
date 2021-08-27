@@ -1,8 +1,7 @@
-package com.oleg.warehouse.controllers;
+package com.oleg.warehouse.controller;
 
 import com.oleg.warehouse.dto.VendorDTO;
-import com.oleg.warehouse.factory.VendorDTOFactory;
-import com.oleg.warehouse.services.VendorService;
+import com.oleg.warehouse.service.VendorService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

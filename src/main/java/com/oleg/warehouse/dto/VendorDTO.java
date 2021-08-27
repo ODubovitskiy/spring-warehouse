@@ -1,7 +1,6 @@
 package com.oleg.warehouse.dto;
 
 
-import com.oleg.warehouse.entities.VendorEntity;
 import lombok.Builder;
 import lombok.Data;
 

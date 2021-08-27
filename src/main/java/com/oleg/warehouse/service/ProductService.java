@@ -1,19 +1,18 @@
-package com.oleg.warehouse.services;
+package com.oleg.warehouse.service;
 
 import com.oleg.warehouse.dto.ProductDTO;
-import com.oleg.warehouse.entities.ProductEntity;
-import com.oleg.warehouse.entities.VendorEntity;
-import com.oleg.warehouse.exceptions.ProductAlreadyExistsException;
-import com.oleg.warehouse.exceptions.ProductNotFoundException;
-import com.oleg.warehouse.exceptions.VendorNotFoundException;
+import com.oleg.warehouse.entity.ProductEntity;
+import com.oleg.warehouse.entity.VendorEntity;
+import com.oleg.warehouse.exception.ProductAlreadyExistsException;
+import com.oleg.warehouse.exception.ProductNotFoundException;
+import com.oleg.warehouse.exception.VendorNotFoundException;
 import com.oleg.warehouse.factory.ProductDTOFactory;
-import com.oleg.warehouse.repositories.ProductRepository;
-import com.oleg.warehouse.repositories.VendorRepository;
+import com.oleg.warehouse.repository.ProductRepository;
+import com.oleg.warehouse.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -31,15 +30,13 @@ public class ProductService {
 
     public List<ProductDTO> getAll() {
         List<ProductEntity> productEntities = productRepository.findAll();
-        return productEntities.stream()
-                .map(productDTOFactory::makeDefault)
-                .collect(Collectors.toList());
+        return productDTOFactory.makeProductDTOList(productEntities);
     }
 
     public ProductDTO getById(Long id) throws ProductNotFoundException {
-        if (!productRepository.existsById(id))
-            throw new ProductNotFoundException("Product with id = " + id + " does not exist!");
-        return productDTOFactory.makeDefault(productRepository.findById(id).get());
+        ProductEntity product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product with id = " + id + " does not exist!"));
+        return productDTOFactory.makeDefault(product);
     }
 
     public ProductDTO saveProduct(ProductEntity productEntity) throws ProductAlreadyExistsException, VendorNotFoundException {
@@ -79,18 +76,15 @@ public class ProductService {
     }
 
     public List<ProductDTO> fetchByDescription(String description) {
-        return productRepository.findAllByDescriptionContaining(description).stream()
-                .map(productDTOFactory::makeDefault)
-                .collect(Collectors.toList());
+        List<ProductEntity> entities = productRepository.findAllByDescriptionContaining(description);
+        return productDTOFactory.makeProductDTOList(entities);
     }
 
     public List<ProductDTO> fetchByVendor(String vendor) throws ProductNotFoundException {
         VendorEntity vendorObj = vendorRepository.findByName(vendor);
         List<ProductEntity> products = productRepository.findByVendor(vendorObj);
         if (products.size() > 0) {
-            return products.stream()
-                    .map(productDTOFactory::makeDefault)
-                    .collect(Collectors.toList());
+            return productDTOFactory.makeProductDTOList(products);
         } else {
             throw new ProductNotFoundException("There are no products produced by " + vendor);
         }

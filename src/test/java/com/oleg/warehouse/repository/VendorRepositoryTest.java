@@ -1,6 +1,6 @@
-package com.oleg.warehouse.repositories;
+package com.oleg.warehouse.repository;
 
-import com.oleg.warehouse.entities.VendorEntity;
+import com.oleg.warehouse.entity.VendorEntity;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

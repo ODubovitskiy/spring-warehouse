@@ -1,4 +1,4 @@
-package com.oleg.warehouse.exceptions;
+package com.oleg.warehouse.exception;
 
 import javassist.NotFoundException;
 
