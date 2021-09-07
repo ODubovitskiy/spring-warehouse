@@ -4,6 +4,8 @@ import com.oleg.warehouse.dto.ContractorDTO;
 import com.oleg.warehouse.entity.ContractorEntity;
 import com.oleg.warehouse.exception.ContractorAlreadyExistsException;
 import com.oleg.warehouse.exception.ContractorNotFoundException;
+import com.oleg.warehouse.exception.UnauthorisedException;
+import com.oleg.warehouse.service.AuthService;
 import com.oleg.warehouse.service.ContractorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,39 +27,55 @@ public class ContractorController {
 
 
     ContractorService contractorService;
+    AuthService authService;
 
     @Autowired
-    public ContractorController(ContractorService contractorService) {
+    public ContractorController(ContractorService contractorService, AuthService authService) {
         this.contractorService = contractorService;
+        this.authService = authService;
     }
 
     @GetMapping(INDEX)
-    public ResponseEntity<List<ContractorDTO>> index() {
+    public ResponseEntity<List<ContractorDTO>> index(@RequestHeader String token) {
+        try {
+            authService.authenticate(token);
+        } catch (UnauthorisedException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
         return ResponseEntity.ok(contractorService.index());
     }
 
     @PostMapping(STORE)
-    public ResponseEntity<ContractorDTO> store(@RequestBody ContractorEntity contractorEntity) {
+    public ResponseEntity<ContractorDTO> store(@RequestBody ContractorEntity contractorEntity, @RequestHeader String token) {
         try {
+            authService.authenticate(token);
             return ResponseEntity.ok(contractorService.store(contractorEntity));
         } catch (ContractorAlreadyExistsException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        } catch (UnauthorisedException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 
     @GetMapping(SHOW)
-    public ResponseEntity<ContractorDTO> show(@PathVariable Long id) {
+    public ResponseEntity<ContractorDTO> show(@PathVariable Long id, @RequestHeader String token) {
         try {
+            authService.authenticate(token);
             return ResponseEntity.ok(contractorService.show(id));
         } catch (ContractorNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UnauthorisedException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 
     @PatchMapping(UPDATE)
-    public ResponseEntity<ContractorDTO> update(@PathVariable Long id, @RequestBody ContractorEntity contractorEntity) {
+    public ResponseEntity<ContractorDTO> update(@PathVariable Long id, @RequestBody ContractorEntity contractorEntity, @RequestHeader String token) {
+        try {
+            authService.authenticate(token);
+        } catch (UnauthorisedException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
         return ResponseEntity.ok(contractorService.update(id, contractorEntity));
     }
-
-
 }

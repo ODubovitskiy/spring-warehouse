@@ -9,7 +9,7 @@ import lombok.Data;
 public class ProductDTO {
 
     private Long id;
-    private String description;
+    private String description;{}
     private String serialNumber;
     private VendorEntity vendor;
     private Integer price;
